@@ -1,41 +1,44 @@
 "use client";
 
 import { useState } from "react";
+import axios from "@/lib/axios";
 
-export default function registerPage() {
-    const [form, setForm] = useState({
-        name: "",
-        email: "",
-        password: ""
-    });
-    const submit = async (e: React.FormEvent) => {
-        e.preventDefault();
+export default function RegisterPage() {
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    password: "",
+  });
 
-        const res = await fetch("/api/auth/register", {
-            method: "post",
-            headers: { "content-type": "application/json" },
-            body: JSON.stringify(form),
-        });
-        if (res.ok) {
-            alert("Register berhasil");
-        } else {
-            alert("Register gagal");
-        }
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+
+    try {
+      const res = await axios.post("/api/auth/register", form);
+      console.log("SUCCESS:", res.data);
+      alert("Register berhasil");
+    } catch (err: any) {
+      console.error(err.response?.data);
+      alert(err.response?.data?.message || "Error");
     }
-    return (
-        <form onSubmit={submit}>
-            <h1>Register</h1>
-            <input placeholder="Nama"
-                onChange={e => setForm({ ...form, name: e.target.value })}
-            />
-            <input placeholder="Email"
-                onChange={e => setForm({ ...form, email: e.target.value })}
-            />
-            <input placeholder="Password"
-                onChange={e => setForm({ ...form, password: e.target.value })}
-            />
-            <button type="submit">Submit</button>
-        </form>
-    )
-}
+  };
 
+  return (
+    <form onSubmit={handleSubmit}>
+      <input
+        placeholder="Nama"
+        onChange={(e) => setForm({ ...form, name: e.target.value })}
+      />
+      <input
+        placeholder="Email"
+        onChange={(e) => setForm({ ...form, email: e.target.value })}
+      />
+      <input
+        type="password"
+        placeholder="Password"
+        onChange={(e) => setForm({ ...form, password: e.target.value })}
+      />
+      <button type="submit">Register</button>
+    </form>
+  );
+};
