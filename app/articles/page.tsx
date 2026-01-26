@@ -90,7 +90,7 @@ export default function ArticlePage() {
                   </p>
 
                   <Link
-                    href={`/article/${item.slug}`}
+                    href={`/articles/${item.slug}`}
                     className="text-sm font-semibold text-[#1f546b] hover:underline"
                   >
                     Read more →

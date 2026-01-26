@@ -60,7 +60,7 @@ export default function FindDoctor() {
           {categories.map((item) => (
             <Link
               key={item.slug}
-              href={`/doctors/${item.slug}`}
+              href={`/find-doctor/${item.slug}`}
               className="flex flex-col items-center gap-4 transition hover:scale-105"
             >
               <div className="flex h-24 w-24 items-center justify-center rounded-full bg-[#e9f6fb] md:h-28 md:w-28">

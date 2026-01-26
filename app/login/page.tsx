@@ -165,7 +165,7 @@ export default function Login() {
             {/* Footer */}
             <p className="text-center text-xs text-gray-500">
               Don’t have an account?{" "}
-              <Link href="/pasien/register" className="font-medium text-[#1E5468]">
+              <Link href="/register" className="font-medium text-[#1E5468]">
                 Sign Up
               </Link>
             </p>

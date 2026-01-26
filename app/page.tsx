@@ -79,12 +79,12 @@ export default function Home() {
           Find a doctor
         </Link>
 
-        <Link href="/article" className="hover:underline">
+        <Link href="/articles" className="hover:underline">
           Article
         </Link>
 
         <Link href="/login">
-        <button className="ml-2 rounded-lg bg-[#D7E7EE] px-4 py-1.5 text-sm font-medium text-[#3B9797]">
+        <button className="ml-2 rounded-lg bg-[#D7E7EE] hover:bg-[#D3E2E8] px-4 py-1.5 text-sm font-medium text-[#3B9797]">
           Sign in
         </button>
         </Link>

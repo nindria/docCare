@@ -33,12 +33,12 @@ export default function Navbar() {
               Find a doctor
             </Link>
 
-            <Link href="/article" className="hover:underline">
+            <Link href="/articles" className="hover:underline">
               Article
             </Link>
 
             <Link href="/login">
-            <button className="ml-2 rounded-lg bg-[#245b72] px-4 py-1.5 text-sm font-medium text-white">
+            <button className="ml-2 rounded-lg bg-[#245b72] px-4 py-1.5 text-sm font-medium text-white hover:bg-[#113651]">
               Sign in
             </button>
             </Link>

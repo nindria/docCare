@@ -4,25 +4,28 @@ import Navbar from "../../../components2/navbar";
 import Footer from "../../../components2/footer";
 import { articles } from "../../../data/articles";
 
-export default function ArticleDetail({ params }) {
-  
+type Props = {
+  params: Promise<{
+    slug: string;
+  }>;
+};
+
+export default async function ArticleDetail({ params }: Props) {
+  const { slug } = await params;
+
   const article = articles.find(
-    (item) => item.slug === params.slug
+    (item) => item.slug === slug
   );
 
   if (!article) {
     return (
       <>
         <Navbar />
-        
         <div className="mx-auto max-w-4xl px-6 py-20 text-center">
           <h2 className="text-2xl font-semibold text-[#1f546b]">
             Article not found
           </h2>
-          <Link
-            href="/article"
-            className="mt-4 inline-block text-[#1f546b] underline"
-          >
+          <Link href="/articles" className="mt-4 inline-block underline">
             Back to Article
           </Link>
         </div>
@@ -36,27 +39,23 @@ export default function ArticleDetail({ params }) {
       <Navbar />
 
       <section className="mx-auto max-w-4xl px-6 py-16">
-        {/* BACK */}
         <Link
-          href="/article"
+          href="/articles"
           className="mb-6 inline-block text-sm text-[#1f546b]"
         >
           ← Back to Article
         </Link>
 
-        {/* TITLE */}
         <h1 className="mb-4 text-3xl font-bold text-[#1f546b]">
           {article.title}
         </h1>
 
-        {/* META */}
         <div className="mb-6 flex gap-4 text-sm text-gray-500">
           <span>{article.author}</span>
           <span>•</span>
           <span>{article.date}</span>
         </div>
 
-        {/* IMAGE */}
         <div className="mb-8 overflow-hidden rounded-xl">
           <Image
             src={article.image}
@@ -67,13 +66,13 @@ export default function ArticleDetail({ params }) {
           />
         </div>
 
-        {/* CONTENT */}
         <div className="space-y-4 text-gray-700 leading-relaxed">
           {article.content
             .trim()
             .split("\n")
-            .map((text, index) => (
-              <p key={index}>{text}</p>
+            .filter(Boolean)
+            .map((text, i) => (
+              <p key={i}>{text}</p>
             ))}
         </div>
       </section>
