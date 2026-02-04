@@ -10,7 +10,6 @@ export default function AdminTopbar() {
       />
 
       <div className="flex items-center gap-4">
-        <button className="rounded-full bg-teal-100 p-2 text-teal-600">🔔</button>
 
         <div className="flex items-center gap-2">
           <Image

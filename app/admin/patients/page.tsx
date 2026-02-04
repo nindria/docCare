@@ -17,7 +17,10 @@ type Patient = {
   name: string;
   email: string;
   phone: string;
+  birth: string;
+  gender: "Laki-laki" | "Perempuan";
   active: boolean;
+  avatar: string;
   bookings: Booking[];
 };
 
@@ -27,7 +30,10 @@ const initialPatients: Patient[] = [
     name: "Budi Santoso",
     email: "budi@email.com",
     phone: "08123456789",
+    birth: "1998-04-12",
+    gender: "Laki-laki",
     active: true,
+    avatar: "https://i.pravatar.cc/150?img=12",
     bookings: [
       { id: 1, doctor: "Dr. Indria", date: "12 Jan 2026", status: "Selesai" },
       { id: 2, doctor: "Dr. Ahmad", date: "20 Jan 2026", status: "Menunggu" },
@@ -38,7 +44,10 @@ const initialPatients: Patient[] = [
     name: "Siti Rahma",
     email: "siti@email.com",
     phone: "08987654321",
+    birth: "2001-09-22",
+    gender: "Perempuan",
     active: true,
+    avatar: "https://i.pravatar.cc/150?img=32",
     bookings: [
       { id: 3, doctor: "Dr. Indria", date: "18 Jan 2026", status: "Dibatalkan" },
     ],
@@ -48,7 +57,6 @@ const initialPatients: Patient[] = [
 export default function AdminPatientsPage() {
   const [patients, setPatients] = useState<Patient[]>(initialPatients);
 
-  // 🚫 NONAKTIFKAN
   const handleDeactivate = (id: number) => {
     Swal.fire({
       title: "Nonaktifkan akun pasien?",
@@ -66,7 +74,6 @@ export default function AdminPatientsPage() {
     });
   };
 
-  // 🔑 RESET PASSWORD
   const handleResetPassword = (patient: Patient) => {
     Swal.fire({
       title: `Reset password ${patient.name}?`,
@@ -81,7 +88,6 @@ export default function AdminPatientsPage() {
     });
   };
 
-  // 📅 RIWAYAT BOOKING
   const handleViewBookings = (patient: Patient) => {
     const bookingList = patient.bookings
       .map(
@@ -100,45 +106,61 @@ export default function AdminPatientsPage() {
   return (
     <div className="flex min-h-screen bg-slate-100">
       <AdminSidebar />
-
       <main className="flex-1 ml-64">
         <AdminTopbar />
 
         <div className="p-8">
           <div className="rounded-2xl bg-white p-6 shadow-sm">
-            
-            {/* HEADER */}
-            <div className="mb-6">
-              <h1 className="text-xl font-bold text-slate-800">
-                Management Pasien
-              </h1>
-              <p className="text-sm text-slate-500">
-                Kelola akun pasien dan riwayat booking
-              </p>
-            </div>
+            <h1 className="mb-1 text-2xl font-bold text-slate-800">
+              Manajemen Pasien
+            </h1>
+            <p className="mb-6 text-sm text-slate-500">
+              Kelola data lengkap pasien yang terdaftar
+            </p>
 
-            {/* TABLE */}
-            <div className="overflow-x-auto rounded-xl border">
+            <div className="overflow-x-auto">
               <table className="w-full text-sm">
-                <thead className="bg-slate-50 text-slate-500">
+                <thead className="bg-slate-50 text-slate-500 border-b">
                   <tr>
-                    <th className="px-4 py-3 text-left">Nama</th>
+                    <th className="px-4 py-3 text-left">Pasien</th>
                     <th className="px-4 py-3 text-left">Email</th>
-                    <th className="px-4 py-3 text-left">Telepon</th>
+                    <th className="px-4 py-3 text-left">No. WhatsApp</th>
+                    <th className="px-4 py-3 text-left">Tanggal Lahir</th>
+                    <th className="px-4 py-3 text-left">Gender</th>
                     <th className="px-4 py-3 text-left">Status</th>
                     <th className="px-4 py-3 text-right">Aksi</th>
                   </tr>
                 </thead>
 
-                <tbody className="divide-y bg-white">
+                <tbody className="divide-y">
                   {patients.map((p) => (
                     <tr key={p.id} className="hover:bg-slate-50">
-                      <td className="px-4 py-3 font-medium text-slate-700">
-                        {p.name}
+                      {/* PASIEN */}
+                      <td className="px-4 py-4">
+                        <div className="flex items-center gap-3">
+                          <img
+                            src={p.avatar}
+                            alt={p.name}
+                            className="h-11 w-11 rounded-full object-cover border"
+                          />
+                          <div>
+                            <p className="font-semibold text-slate-800">
+                              {p.name}
+                            </p>
+                            <p className="text-xs text-slate-400">ID: {p.id}</p>
+                          </div>
+                        </div>
                       </td>
-                      <td className="px-4 py-3">{p.email}</td>
-                      <td className="px-4 py-3">{p.phone}</td>
-                      <td className="px-4 py-3">
+
+                      <td className="px-4 py-4 text-slate-600">{p.email}</td>
+                      <td className="px-4 py-4 text-slate-600">{p.phone}</td>
+                      <td className="px-4 py-4 text-slate-600">
+                        {new Date(p.birth).toLocaleDateString("id-ID")}
+                      </td>
+                      <td className="px-4 py-4 text-slate-600">{p.gender}</td>
+
+                      {/* STATUS */}
+                      <td className="px-4 py-4">
                         {p.active ? (
                           <span className="rounded-full bg-green-100 px-3 py-1 text-xs font-semibold text-green-600">
                             Aktif
@@ -149,29 +171,33 @@ export default function AdminPatientsPage() {
                           </span>
                         )}
                       </td>
-                      <td className="px-4 py-3 text-right space-x-3">
-                        <button
-                          onClick={() => handleViewBookings(p)}
-                          className="text-xs font-semibold text-blue-600 hover:underline"
-                        >
-                          Riwayat Booking
-                        </button>
 
-                        {p.active && (
+                      {/* AKSI */}
+                      <td className="px-4 py-4 text-right">
+                        <div className="flex justify-end gap-2">
                           <button
-                            onClick={() => handleDeactivate(p.id)}
-                            className="text-xs font-semibold text-red-600 hover:underline"
+                            onClick={() => handleViewBookings(p)}
+                            className="rounded-lg bg-blue-50 px-3 py-1 text-xs font-semibold text-blue-600 hover:bg-blue-100"
                           >
-                            Nonaktifkan
+                            Booking
                           </button>
-                        )}
 
-                        <button
-                          onClick={() => handleResetPassword(p)}
-                          className="text-xs font-semibold text-purple-600 hover:underline"
-                        >
-                          Reset Password
-                        </button>
+                          {p.active && (
+                            <button
+                              onClick={() => handleDeactivate(p.id)}
+                              className="rounded-lg bg-red-50 px-3 py-1 text-xs font-semibold text-red-600 hover:bg-red-100"
+                            >
+                              Nonaktifkan
+                            </button>
+                          )}
+
+                          <button
+                            onClick={() => handleResetPassword(p)}
+                            className="rounded-lg bg-purple-50 px-3 py-1 text-xs font-semibold text-purple-600 hover:bg-purple-100"
+                          >
+                            Reset
+                          </button>
+                        </div>
                       </td>
                     </tr>
                   ))}
